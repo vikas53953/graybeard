@@ -1,0 +1,77 @@
+<title>Gate 3 — Green Light: Architecture & Build Plan (Graybeard)</title>
+<style>
+  :root { --bg:#f4f6f8; --surface:#fff; --ink:#1b2733; --muted:#5b6b7a; --line:#d7dee4;
+    --accent:#0f6e8c; --good:#3e7c4f; --good-bg:#e6f0e9; --warn:#8a6d1f; --warn-bg:#f5eedc;
+    --mono:ui-monospace,"Cascadia Code",Consolas,monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#10161c; --surface:#1a232c; --ink:#e4eaee;
+    --muted:#94a4b1; --line:#2c3946; --accent:#4fa8c4; --good:#6fae7e; --good-bg:#1d2f23;
+    --warn:#cbb35e; --warn-bg:#2e2817; } }
+  :root[data-theme="dark"] { --bg:#10161c; --surface:#1a232c; --ink:#e4eaee; --muted:#94a4b1;
+    --line:#2c3946; --accent:#4fa8c4; --good:#6fae7e; --good-bg:#1d2f23; --warn:#cbb35e; --warn-bg:#2e2817; }
+  :root[data-theme="light"] { --bg:#f4f6f8; --surface:#fff; --ink:#1b2733; --muted:#5b6b7a;
+    --line:#d7dee4; --accent:#0f6e8c; --good:#3e7c4f; --good-bg:#e6f0e9; --warn:#8a6d1f; --warn-bg:#f5eedc; }
+  body { background:var(--bg); color:var(--ink); font-family:"Segoe UI",system-ui,sans-serif;
+    line-height:1.55; margin:0; padding:32px 16px 80px; }
+  main { max-width:880px; margin:0 auto; }
+  .gate { font-family:var(--mono); font-size:12px; letter-spacing:.12em; color:var(--warn); text-transform:uppercase; }
+  h1 { font-size:24px; margin:4px 0 6px; }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:22px; max-width:70ch; }
+  h2 { font-size:13.5px; font-family:var(--mono); text-transform:uppercase; letter-spacing:.1em;
+    color:var(--accent); margin:30px 0 10px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:13px 17px; margin-bottom:9px; }
+  .card b { font-size:14.5px; }
+  .card p { margin:3px 0 0; color:var(--muted); font-size:13px; max-width:68ch; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:9px; }
+  .comp { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:11px 14px; font-size:13px; }
+  .comp b { display:block; font-size:13.5px; }
+  .comp span { color:var(--muted); font-size:12.5px; }
+  table { width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; overflow:hidden; font-size:13px; }
+  th,td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+  tr:last-child td { border-bottom:none; }
+  td.u { font-family:var(--mono); font-size:11.5px; white-space:nowrap; color:var(--accent); }
+  .score { display:flex; align-items:center; gap:14px; background:var(--surface);
+    border:1px solid var(--line); border-radius:10px; padding:13px 17px; }
+  .score b { font-size:28px; color:var(--accent); }
+  .score span { color:var(--muted); font-size:13px; max-width:60ch; }
+  .ask { background:var(--good-bg); border-radius:10px; padding:15px 19px; margin-top:26px; font-size:14.5px; }
+  .note { font-size:12.5px; color:var(--muted); margin-top:8px; }
+</style>
+<main>
+  <div class="gate">Hard Gate 3 of 4 · Green light — after this, real building starts</div>
+  <h1>Graybeard — architecture &amp; build plan</h1>
+  <div class="sub">Your R9 law applies to us first: here is Graybeard's own System Design — the map and the principles — then the build plan in six work units. Decisions you might want to change are at the top; plumbing I decided by principle is at the bottom, logged.</div>
+
+  <h2>System Design — the map (what Graybeard is made of)</h2>
+  <div class="grid">
+    <div class="comp"><b>🖥️ Screens</b><span>HTML pages like this one — gates, evidence, dashboards. No app UI to install.</span></div>
+    <div class="comp"><b>🧠 Brain</b><span>The skills — rulebooks written in plain text the AI must follow. This is 90% of the product.</span></div>
+    <div class="comp"><b>🗄️ Memory</b><span>One profile file per user (their answers, their laws) + one scoreboard per project.</span></div>
+    <div class="comp"><b>🔑 Keys</b><span>SKIPPED — no accounts, no login. It's files on your machine.</span></div>
+    <div class="comp"><b>🏠 Home</b><span>GitHub repo + the Claude plugin marketplace. Two commands to install.</span></div>
+    <div class="comp"><b>🔭 Watchtower</b><span>Every law carries its test evidence; every deviation goes in a ledger. The system can explain itself.</span></div>
+    <div class="comp"><b>🔒 Locks</b><span>Transcript reading is 100% local · every touched file backed up first · exact uninstall via a manifest.</span></div>
+    <div class="comp"><b>🔌 Pipes</b><span>Only Claude Code's own plugin surface (skills, hooks, CLAUDE.md). No outside services.</span></div>
+  </div>
+
+  <h2>System Design — the principles (why it's built this way)</h2>
+  <div class="card"><p>✂️ <b>One job per file</b> — each skill does one thing; no god-files (the Touch-the-Grass killer). · 📍 <b>One source of truth</b> — the user's answers live in ONE profile file; everything else is generated from it. · 🎯 <b>Simplest thing that works</b> — the whole product is text files; zero code to compile, zero servers. · ➡️ <b>One-direction flow</b> — templates → generated personal files → behavior; never backwards. · 🔒 <b>Security at the boundary</b> — the only risky touchpoint (the user's settings file) gets backup + merge + verified restore. · 🔭 <b>Observability</b> — laws ship with proof, changes ship with ledger entries. · 🧩 <b>Loose coupling</b> — plugin updates can never overwrite personal laws. · 🗑️ <b>Design-for-deletion</b> — a manifest records every generated file; uninstall removes exactly those.</p></div>
+
+  <h2>The build plan — six units, in order</h2>
+  <table>
+    <tr><th>Unit</th><th>What gets built</th><th>Proof it works</th></tr>
+    <tr><td class="u">U1</td><td><b>Repo skeleton</b> — the plugin's folder shape + manifest + MIT license</td><td>Loads error-free in a fresh Claude Code</td></tr>
+    <tr><td class="u">U2</td><td><b>Starter rulebook</b> — your three laws, de-personalized with fill-in slots</td><td>Same simulated tests we used all week: behavior appears with the law, not without</td></tr>
+    <tr><td class="u">U3</td><td><b>/onboard</b> — the 7-question interview (+ optional story) that generates the personal files</td><td>Dry-run in a sandbox: all files created, settings merged not replaced, backup exists</td></tr>
+    <tr><td class="u">U4</td><td><b>/learn-from-pain — the core.</b> Transcript → disease → ONE general law → tested → evidence page → installed</td><td>Run against a real Touch-the-Grass excerpt; law must be general, evidence page rendered</td></tr>
+    <tr><td class="u">U5</td><td><b>Uninstall</b> — manifest-driven exact removal</td><td>Before/after file comparison: byte-clean</td></tr>
+    <tr><td class="u">U6</td><td><b>Docs</b> — non-coder README, privacy promise, contributor guide</td><td>No unglossed jargon (checked against a jargon list)</td></tr>
+  </table>
+  <p class="note">Plumbing decided by principle and logged in the plan file: markdown-first, templates-in-plugin / personal-files-in-user-space, per-project scoreboards, subagent test recipe with cost line, plugin-conflict detection at onboard. Nothing there changes what the product does.</p>
+
+  <h2>Honesty box</h2>
+  <div class="score"><b>8.5/10</b><span>The plan covers all R1–R9 with test proof per unit. The half-points off: the marketplace-publish mechanics (U1) and the exact 7 interview questions (U3) will be finalized during build — both low-risk, both will appear in your Gate 4 review. Biggest real risk: U4's mining quality — that's why it gets tested on your real transcript, not synthetic data.</span></div>
+
+  <div class="ask"><b>Your move:</b> say <b>"green light"</b> and building starts (U1→U6, scoreboard ticking, deviations ledgered, every unit tested before the next). Or challenge anything above — this is the last cheap moment to change the architecture.</div>
+</main>

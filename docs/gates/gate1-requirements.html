@@ -1,0 +1,91 @@
+<title>Gate 1 — What We're Building (Graybeard)</title>
+<style>
+  :root { --bg:#f4f6f8; --surface:#fff; --ink:#1b2733; --muted:#5b6b7a; --line:#d7dee4;
+    --accent:#0f6e8c; --good:#3e7c4f; --good-bg:#e6f0e9; --warn:#8a6d1f; --warn-bg:#f5eedc;
+    --mono:ui-monospace,"Cascadia Code",Consolas,monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#10161c; --surface:#1a232c; --ink:#e4eaee;
+    --muted:#94a4b1; --line:#2c3946; --accent:#4fa8c4; --good:#6fae7e; --good-bg:#1d2f23;
+    --warn:#cbb35e; --warn-bg:#2e2817; } }
+  :root[data-theme="dark"] { --bg:#10161c; --surface:#1a232c; --ink:#e4eaee; --muted:#94a4b1;
+    --line:#2c3946; --accent:#4fa8c4; --good:#6fae7e; --good-bg:#1d2f23; --warn:#cbb35e; --warn-bg:#2e2817; }
+  :root[data-theme="light"] { --bg:#f4f6f8; --surface:#fff; --ink:#1b2733; --muted:#5b6b7a;
+    --line:#d7dee4; --accent:#0f6e8c; --good:#3e7c4f; --good-bg:#e6f0e9; --warn:#8a6d1f; --warn-bg:#f5eedc; }
+  body { background:var(--bg); color:var(--ink); font-family:"Segoe UI",system-ui,sans-serif;
+    line-height:1.55; margin:0; padding:36px 18px 80px; }
+  main { max-width:880px; margin:0 auto; }
+  .gate { font-family:var(--mono); font-size:12px; letter-spacing:.12em; color:var(--warn);
+    text-transform:uppercase; }
+  h1 { font-size:26px; margin:4px 0 6px; }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:26px; max-width:70ch; }
+  h2 { font-size:14px; font-family:var(--mono); text-transform:uppercase; letter-spacing:.1em;
+    color:var(--accent); margin:34px 0 12px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:14px 18px; margin-bottom:10px; }
+  .card b { font-size:15px; }
+  .card p { margin:4px 0 0; color:var(--muted); font-size:13.5px; max-width:66ch; }
+  .pill { font-family:var(--mono); font-size:10.5px; padding:2px 9px; border-radius:999px;
+    background:var(--good-bg); color:var(--good); margin-left:8px; vertical-align:middle; white-space:nowrap; }
+  table { width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; overflow:hidden; font-size:13.5px; }
+  th,td { text-align:left; padding:10px 13px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+  tr:last-child td { border-bottom:none; }
+  td.n { font-family:var(--mono); font-size:12px; white-space:nowrap; }
+  .taste { background:var(--warn-bg); border-radius:10px; padding:14px 18px; margin-bottom:10px; font-size:14px; }
+  .taste b { color:var(--warn); }
+  .taste span { color:var(--muted); font-size:13px; display:block; }
+  .score { display:flex; align-items:center; gap:14px; background:var(--surface);
+    border:1px solid var(--line); border-radius:10px; padding:14px 18px; }
+  .score b { font-size:30px; color:var(--accent); font-variant-numeric:tabular-nums; }
+  .score span { color:var(--muted); font-size:13.5px; max-width:58ch; }
+  .ask { background:var(--good-bg); border-radius:10px; padding:16px 20px; margin-top:30px; font-size:15px; }
+  footer { margin-top:36px; font-size:12px; color:var(--muted); }
+</style>
+<main>
+  <div class="gate">Hard Gate 1 of 4 · Requirements · nothing gets built until you approve</div>
+  <h1>Graybeard — what we're building</h1>
+  <div class="sub">An open-source Claude Code plugin that gives people like you — domain experts who don't code — the working discipline of a senior engineering team. It ships with proven laws, personalizes them to each user in a 10-minute interview, and (the heart of it) <b>turns every painful session into a new tested law</b>.</div>
+
+  <h2>The three pieces</h2>
+  <div class="card"><b>1 · Starter rulebook</b><span class="pill">PROVEN ON YOU</span>
+    <p>The laws we built and tested this week — brief-before-code, neighbors re-tested, evidence before "done", fix-the-class, one question at a time, visual pages, the conductor pipeline with scoreboard and gates — stripped of your name, templated for anyone.</p></div>
+  <div class="card"><b>2 · Onboarding interview</b>
+    <p>One command. Seven questions or fewer, one at a time, each with a recommendation. Out comes: their personal standing orders, the every-turn reminder hook (installed safely), and laws with their name on them. What took us three days happens in ten minutes.</p></div>
+  <div class="card"><b>3 · The loop — the core</b><span class="pill">NOBODY ELSE HAS THIS</span>
+    <p>Something went painfully wrong? One command: point at the bad conversation → it finds the disease → proposes ONE general law (never a case-patch) → proves it with tests (fails without the law, passes with it) → installs it. Your Touch the Grass afternoon, productized.</p></div>
+
+  <h2>The bars (numbers, not adjectives — per your own law)</h2>
+  <table>
+    <tr><th>Promise</th><th>Bar</th></tr>
+    <tr><td>Install on fresh Claude Code</td><td class="n">≤ 2 commands · ≤ 2 min</td></tr>
+    <tr><td>Onboarding interview</td><td class="n">≤ 7 questions · ≤ 10 min</td></tr>
+    <tr><td>Pain → tested installed law</td><td class="n">≤ 1 hour · test evidence shown</td></tr>
+    <tr><td>Uninstall</td><td class="n">settings restored exactly · verified</td></tr>
+    <tr><td>Privacy</td><td class="n">transcript mining 100% local</td></tr>
+  </table>
+
+  <h2>Landmines already spotted (so they don't spot us)</h2>
+  <table>
+    <tr><th>Risk</th><th>Answer built into the requirements</th></tr>
+    <tr><td>Testing laws costs the user tokens</td><td>Cost stated before spending + cheaper "install untested, flagged" option</td></tr>
+    <tr><td>We touch the user's settings file</td><td>Merge never overwrite, backup first, uninstall verified byte-exact</td></tr>
+    <tr><td>Transcripts are private</td><td>Local-only mining, said loudly in the docs</td></tr>
+    <tr><td>User already has gstack / superpowers / CE</td><td>Detect and defer — one owner per stage, never fight</td></tr>
+    <tr><td>Plugin format may change</td><td>Thin plugin, pinned to the documented manifest</td></tr>
+  </table>
+
+  <h2>Out of scope for v1 (on purpose)</h2>
+  <div class="card"><p>Cursor/Codex ports · any cloud service or telemetry · team features · GUI beyond HTML pages · non-English onboarding. Small and excellent first; the community carries it sideways after open-sourcing.</p></div>
+
+  <h2>Taste decisions — react, don't compose</h2>
+  <div class="taste"><b>Name</b> — my recommendation: <b>Graybeard</b> ("the senior engineer watching over your shoulder"). Alternates: Sensei · The Compact · Scar Tissue.<span>Stake: it's the open-source brand; renaming later costs goodwill. We'll check the name is free before publishing.</span></div>
+  <div class="taste"><b>Commands</b> — my recommendation: <b>/onboard</b> and <b>/learn-from-pain</b>. <span>Stake: low — cosmetic, changeable anytime.</span></div>
+  <div class="taste"><b>License</b> — my recommendation: <b>MIT</b> (maximum adoption, standard for this ecosystem). <span>Stake: medium — hard to make more restrictive later.</span></div>
+
+  <h2>Completeness</h2>
+  <div class="score"><b>8/10</b><span>This covers the full v1 honestly. The missing 2: the exact interview questions and the loop's internal test recipe are designed at the plan stage (Gate 3), not promised here. Nothing hidden.</span></div>
+
+  <div class="ask"><b>Your move:</b> say <b>"approve gate 1"</b> (with any name/license picks), or tell me what to change on this page. Next stop after approval: Gate 2 — clickable mocks of the onboarding interview and the loop's evidence page.</div>
+
+  <footer>Graybeard · Gate 1 · 2026-07-06 · machine artifact: docs/plans/2026-07-06-001-product-graybeard-plan.md · scoreboard: PIPELINE.md</footer>
+</main>

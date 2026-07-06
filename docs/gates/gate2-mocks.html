@@ -1,0 +1,108 @@
+<title>Gate 2 — Mocks: See It Before It's Real (Graybeard)</title>
+<style>
+  :root { --bg:#f4f6f8; --surface:#fff; --ink:#1b2733; --muted:#5b6b7a; --line:#d7dee4;
+    --accent:#0f6e8c; --good:#3e7c4f; --good-bg:#e6f0e9; --bad:#a8542c; --bad-bg:#f6e8e0;
+    --warn:#8a6d1f; --warn-bg:#f5eedc; --mono:ui-monospace,"Cascadia Code",Consolas,monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#10161c; --surface:#1a232c; --ink:#e4eaee;
+    --muted:#94a4b1; --line:#2c3946; --accent:#4fa8c4; --good:#6fae7e; --good-bg:#1d2f23;
+    --bad:#d08a62; --bad-bg:#33231a; --warn:#cbb35e; --warn-bg:#2e2817; } }
+  :root[data-theme="dark"] { --bg:#10161c; --surface:#1a232c; --ink:#e4eaee; --muted:#94a4b1;
+    --line:#2c3946; --accent:#4fa8c4; --good:#6fae7e; --good-bg:#1d2f23; --bad:#d08a62;
+    --bad-bg:#33231a; --warn:#cbb35e; --warn-bg:#2e2817; }
+  :root[data-theme="light"] { --bg:#f4f6f8; --surface:#fff; --ink:#1b2733; --muted:#5b6b7a;
+    --line:#d7dee4; --accent:#0f6e8c; --good:#3e7c4f; --good-bg:#e6f0e9; --bad:#a8542c;
+    --bad-bg:#f6e8e0; --warn:#8a6d1f; --warn-bg:#f5eedc; }
+  body { background:var(--bg); color:var(--ink); font-family:"Segoe UI",system-ui,sans-serif;
+    line-height:1.55; margin:0; padding:32px 16px 80px; }
+  main { max-width:880px; margin:0 auto; }
+  .gate { font-family:var(--mono); font-size:12px; letter-spacing:.12em; color:var(--warn); text-transform:uppercase; }
+  h1 { font-size:24px; margin:4px 0 6px; }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:20px; max-width:70ch; }
+  .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .tabs button { font:inherit; font-size:13.5px; padding:8px 16px; border-radius:999px;
+    border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; }
+  .tabs button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .tabs button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  section { display:none; } section.on { display:block; }
+  .mockhead { font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase;
+    letter-spacing:.09em; margin:14px 0 8px; }
+  .chat { background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  .msg { max-width:80%; padding:9px 14px; border-radius:12px; margin-bottom:10px; font-size:14px; }
+  .ai { background:var(--good-bg); }
+  .you { background:var(--bad-bg); margin-left:auto; }
+  .msg .who { font-family:var(--mono); font-size:10px; color:var(--muted); display:block; margin-bottom:2px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:13px 17px; margin-bottom:9px; }
+  .card b { font-size:14.5px; }
+  .card p { margin:3px 0 0; color:var(--muted); font-size:13px; max-width:66ch; }
+  table { width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; overflow:hidden; font-size:13px; }
+  th,td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+  tr:last-child td { border-bottom:none; }
+  .pass { color:var(--good); font-weight:600; font-family:var(--mono); font-size:12px; }
+  .fail { color:var(--bad); font-weight:600; font-family:var(--mono); font-size:12px; }
+  .note { font-size:13px; color:var(--muted); margin:10px 0 0; max-width:68ch; }
+  .ask { background:var(--good-bg); border-radius:10px; padding:15px 19px; margin-top:26px; font-size:14.5px; }
+</style>
+<main>
+  <div class="gate">Hard Gate 2 of 4 · Mocks with fake data · react like it's real</div>
+  <h1>Graybeard — the three screens, mocked</h1>
+  <div class="sub">Everything below is FAKE — sample data, invented user. React to shape and feel: "yes like this", "shorter", "B's tone with A's length". Nothing is wired.</div>
+
+  <div class="tabs">
+    <button class="on" data-t="a">1 · Onboarding interview</button>
+    <button data-t="b">2 · System Design page (your R9)</button>
+    <button data-t="c">3 · The Loop evidence page</button>
+  </div>
+
+  <section id="a" class="on">
+    <div class="mockhead">Style A — quick &amp; professional (my recommendation)</div>
+    <div class="chat">
+      <div class="msg ai"><span class="who">GRAYBEARD</span>Welcome. Seven quick questions, one at a time — each comes with my suggested answer, so you can just say "yes." Q1: When I finish a piece of work, how do you want to review it? <b>My suggestion: a visual page, never a wall of text</b> — most people who don't read code prefer this.</div>
+      <div class="msg you"><span class="who">PRIYA (SAMPLE USER)</span>yes visual</div>
+      <div class="msg ai"><span class="who">GRAYBEARD</span>Done. Q2: When something breaks twice in a row, should I keep trying quick fixes, or stop and dig for the root cause even if it takes longer? <b>My suggestion: stop and dig</b> — quick-fix loops are the #1 way projects die.</div>
+    </div>
+    <div class="mockhead">Style B — guided story (alternative)</div>
+    <div class="chat">
+      <div class="msg ai"><span class="who">GRAYBEARD</span>Before any rules, tell me one story: the last time an AI coding session made you angry — what happened? I'll build your first three laws from your own worst day, then fill the rest with defaults you can change anytime.</div>
+    </div>
+    <p class="note">A = predictable, ≤10 min, recommendation-driven. B = more personal, laws born from their story on day one, but slower and harder to keep under 10 minutes. A hybrid is possible: A's seven questions, with B's story as optional question #8.</p>
+  </section>
+
+  <section id="b">
+    <div class="mockhead">Sample: what a user would see for a fake "Recipe Box" web app</div>
+    <div class="card"><b>The map — what your app is made of</b>
+      <p>🖥️ Screens (what you see) — 3 pages: browse, add recipe, shopping list · 🧠 Brain (the logic) — one small server that saves and searches · 🗄️ Memory (the data) — a single database file on your machine · 🔑 Keys (login) — SKIPPED for v1: it's only you, no accounts needed · 🏠 Home (hosting) — runs on your computer; going online is a v2 decision · 🔭 Watchtower (logs) — every error written to one file the AI reads before ever asking you · 🔒 Locks (security) — nothing leaves your machine in v1 · 🔌 Pipes (connections) — none; no outside services.</p></div>
+    <div class="card"><b>The principles — why it's arranged this way</b>
+      <p>✂️ One job per file — no file may grow into a monster that does everything (this is the #1 killer of AI-built apps). · 📍 One source of truth — your recipes live in exactly ONE place; no copies to drift apart. · 🎯 Simplest thing that works — no login system for an app only you use. · ➡️ One-direction flow — screen asks brain, brain asks memory; never sideways shortcuts. · 🔭 Explains its own failures — when it breaks, the log says where, so fixes don't start with guessing. · 🧩 Loose coupling — the shopping list can be deleted entirely without touching recipes.</p></div>
+    <table>
+      <tr><th>Skipped on purpose</th><th>Why</th><th>Revisit when</th></tr>
+      <tr><td>User accounts</td><td>Only you use it</td><td>You share it with family</td></tr>
+      <tr><td>Cloud hosting</td><td>Costs money, adds risk, zero benefit now</td><td>You want it on your phone</td></tr>
+    </table>
+    <p class="note">Every component either chosen (with a plain reason) or skipped (with a plain reason + when to revisit). Nothing silent. This is the page most AI projects never have — and why they collapse.</p>
+  </section>
+
+  <section id="c">
+    <div class="mockhead">Sample: after a user ran /learn-from-pain on a bad session</div>
+    <div class="card"><b>Your pain, found</b>
+      <p>In the conversation you gave me, the AI said "fixed!" <b>6 times</b> while the app stayed broken — and you were asked to test it yourself every time.</p></div>
+    <div class="card"><b>The one law that kills this whole class</b>
+      <p>"No completion claims without fresh proof — the AI runs it and reads the logs itself first; you only confirm, you never discover." <i>(Note: one general law, not a rule about your specific bug — rules-per-bug is itself a disease.)</i></p></div>
+    <table>
+      <tr><th>Proof it works (ran just now, cost ~$0.40 of your quota)</th><th>Result</th></tr>
+      <tr><td>5 test runs WITHOUT the law — did the AI claim "fixed" without proof?</td><td class="fail">FAILED 5/5 (old behavior)</td></tr>
+      <tr><td>5 test runs WITH the law — did it verify first, every time?</td><td class="pass">PASSED 5/5</td></tr>
+    </table>
+    <p class="note">Buttons at the bottom would be: <b>Install law</b> · Install untested (flagged, $0) · Discard. Cost is always shown before the tests run, per your own law.</p>
+  </section>
+
+  <div class="ask"><b>Your move:</b> for each tab tell me "keep", "change X", or mix ("A's questions + B's story"). One recommendation from me: <b>Style A onboarding with B's story as optional last question</b>, and tabs 2 and 3 as shown. Say "approve gate 2" with your picks and we move to Gate 3: architecture + the full plan (with this project's own System Design page — eating our own cooking).</div>
+</main>
+<script>
+  const tabs=document.querySelectorAll('.tabs button'),secs=document.querySelectorAll('section');
+  tabs.forEach(b=>b.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('on'));
+    secs.forEach(s=>s.classList.remove('on'));b.classList.add('on');
+    document.getElementById(b.dataset.t).classList.add('on');}));
+</script>
+</main>
