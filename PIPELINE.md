@@ -15,8 +15,8 @@ rulebook and an onboarding interview.
 | 5 | Build             | DONE — U1-U6 all built | skills/, templates/, docs/, README |
 | 6 | Code review       | DONE 2026-07-07 — 10/10 tests green (loop, onboard 13/13, uninstall AE3 incl. re-run, 6/6 rulebook reps); 9/10 issues resolved (1 cosmetic deferred); decision #7→A applied & retested | docs/gates/stage6-review.html |
 | 7 | QA                | MECHANICS DONE 2026-07-07 — 18/18 test paths pass (install manifests, onboard×4, loop×3, uninstall×4, rulebooks 6/6); marketplace.json built; 5 live-machine confirmations left to Vikas (install/timing) | docs/gates/stage7-qa.html |
-| 8 | Ship (open source)| GATE 4 IN PROGRESS 2026-07-07 — ✅ install+load CONFIRMED live; ✅ ONBOARDING run live on Vikas's machine + verified 11/11; ✅ worklaw v0.1 auto-offer seed added + smoke-tested (Fable 5 opinion, Option A). Ready to publish (gh authed as vikas53953, repo scope); awaiting Vikas confirm of public repo name. Not-yet-live-tested: build-brief, loop, uninstall (sandbox-proven) | docs/gates/gate4-ship.html |
-| 9 | Learn             | not started                         | — |
+| 8 | Ship (open source)| ✅ SHIPPED 2026-07-07 — PUBLIC at https://github.com/vikas53953/graybeard (main, v0.1.0). Install verified: marketplace.json/plugin.json/skills/README/LICENSE all on remote. install+load+onboarding confirmed live; build/loop/uninstall sandbox-proven (live runs optional, via try-it-runbook). | github.com/vikas53953/graybeard |
+| 9 | Learn             | v0.2 backlog captured (auto-trigger the loop + Fable 5 guardrails); learnings in implementation-notes | see Open questions / implementation-notes |
 
 Open questions (batched at Gate 1, taste): product name (rec: Graybeard),
 command names (rec: /onboard, /learn-from-pain), license (rec: MIT).
