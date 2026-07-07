@@ -1,9 +1,11 @@
 # Graybeard profile — {{USER_NAME}}
 
 This file is the **single source of truth** for how Graybeard works with you.
-It was written by `/onboard` and it is yours to edit anytime. Change a line here,
-then run `/onboard` again (or just tell Claude "reread my Graybeard profile") and
-your laws update to match. Nothing here leaves your machine.
+It was written by `/onboard` and it is yours to edit anytime. Change a line
+here, then run `/onboard` again to regenerate your standing orders and the
+every-turn reminder from it. (Telling Claude "reread my Graybeard profile"
+applies your changes for the current session only — the regenerated files need
+the re-run.) Nothing here leaves your machine.
 
 Generated: {{GENERATED_DATE}}   ·   Graybeard version: {{PLUGIN_VERSION}}
 
@@ -32,6 +34,7 @@ Generated: {{GENERATED_DATE}}   ·   Graybeard version: {{PLUGIN_VERSION}}
 {{TRAFFIC_NOTE}}
 
 ---
-*Edit freely. This profile is the source of truth — it drives your CLAUDE.md
-standing orders and the every-turn reminder. Run `/graybeard-uninstall` to remove
-everything Graybeard added — your backups are restored exactly.*
+*Edit freely. This profile is the source of truth — your CLAUDE.md standing
+orders and the every-turn reminder are regenerated from it on each `/onboard`
+run. Run `/graybeard-uninstall` to remove everything Graybeard added — exactly
+and only Graybeard's additions.*

@@ -24,7 +24,7 @@ black-box code, and walls of text.
 5. **Two failed tries → STOP.** Root-cause; never patch the same symptom a third
    time. This is a *pain signal*: at this moment, offer the user
    `/learn-from-pain` to turn the failure into a permanent, tested law — their
-   call, and never run the paid test without a yes (cost-before-spending, #7).
+   call, and never run the paid test without a yes — say the price first, always (the cost-before-spending rule).
 6. **Prove it before "done."** Run it. Couldn't verify? Say so plainly.
 7. **Fix the class, not the case.** A correction never becomes a case-specific
    rule ("if asked about X, then..."). Find the ONE principle or structural

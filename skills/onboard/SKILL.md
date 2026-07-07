@@ -29,7 +29,7 @@ it is touched, and everything generated is recorded in a manifest so
    - **Missing →** first run. One-line welcome, then Q1 in the SAME message.
 3. Get a timestamp for backups: run `date +%Y%m%d-%H%M%S` (bash) or
    `Get-Date -Format yyyyMMdd-HHmmss` (PowerShell). Call it `<ts>`.
-4. **Traffic-control scan (KTD6, silent):** look for other discipline plugins so
+4. **Traffic-control scan (silent):** look for other discipline plugins so
    the generated orders defer instead of fighting (blindspot B4). Check:
    `~/.claude/plugins/`, `~/.claude/skills/`, and the user's settings for names
    containing `superpowers`, `gstack`, `compound-engineering`, `idea-to-product`,
@@ -50,7 +50,10 @@ answer doesn't change any generated file, don't ask it.
 - **Q3 — When I finish a piece of work, how do you want to review it?**
   Options: a visual HTML page you open in a browser · a short plain-text summary
   · just tell me it's done. Rec: **visual HTML page** (you catch problems you'd
-  never spot in text). → `REVIEW_STYLE`.
+  never spot in text). → `REVIEW_STYLE`. Store it as a NOUN PHRASE that reads
+  naturally after the word "as" — "a visual HTML page", "a short text summary",
+  "a bare done-notice" — never the option's sentence form ("just tell me it's
+  done" would splice badly into the templates).
 - **Q4 — How plain should I keep my replies?**
   Rec: **"Short and jargon-free; teach me a term only when I need it."** →
   `PLAINNESS`.
@@ -95,9 +98,9 @@ The three rulebooks are already installed with the plugin — I don't copy them;
 your name and preferences above make them act personally.
 ```
 
-Wait for "go" (worklaw law #1). Then generate.
+Wait for "go" (the brief-before-code rule). Then generate.
 
-## Generate (KTD2 files, KTD5 safety) — order matters
+## Generate — order matters
 
 **Backups protect the PRISTINE pre-Graybeard file — never a re-run.** For every
 file that already exists and will be modified: FIRST check whether a
@@ -110,18 +113,29 @@ the original, never a copy that already contains Graybeard's edits. Never write
 over a user file without a pristine backup on record.
 
 **The manifest is an append-log, written AS YOU GO — not at the end.** Create
-`~/.claude/graybeard/manifest.txt` FIRST (before step 1), then append one line
-the moment each file is created or backed up. If onboard is interrupted
-half-way, the manifest still records exactly what was done so far, so
-`/graybeard-uninstall` can always undo a partial run. Files Graybeard creates
-fresh are recorded as `CREATED`; pristine backups as `BACKUP`. Never leave a
-created/modified file unrecorded.
+`~/.claude/graybeard/manifest.txt` FIRST (before step 1; on a re-run it already
+exists — keep it, never truncate). Exact line formats, fields separated by ONE
+TAB character:
+`CREATED<TAB><path>` · `BACKUP<TAB><original><TAB><backup-path>`
+Per-file order is fixed: **copy the backup → append its BACKUP line → only then
+modify the file.** That order means a crash can never leave an unrecorded
+backup or an unbacked-up modification. Before appending any line, check for an
+existing line for the same path — keep exactly one (replace, don't duplicate).
+If onboard is interrupted half-way, the manifest still records exactly what was
+done so far, so `/graybeard-uninstall` can always undo a partial run. Never
+leave a created/modified file unrecorded.
 
 Build a substitution map from the answers:
 `{{USER_NAME}} {{USER_BACKGROUND}} {{CODE_COMFORT}} {{REVIEW_STYLE}} {{PLAINNESS}}
 {{TWO_STRIKES}} {{QUIZ_PREF}} {{AUTONOMY_LEVEL}} {{STORY_SEED}} {{TRAFFIC_NOTE}}
 {{GENERATED_DATE}} {{PLUGIN_VERSION}}`. `PLUGIN_VERSION` = the `version` in this
-plugin's `.claude-plugin/plugin.json`. `GENERATED_DATE` = today.
+plugin's `.claude-plugin/plugin.json`. `GENERATED_DATE` = today. Resolve
+`TRAFFIC_NOTE` NOW, from the traffic-control scan you ran in Prepare: if other
+discipline plugins were found, one sentence naming one owner per stage
+(e.g. "superpowers detected — defer to its brainstorming for planning; use
+graybeard-conductor for idea→product"); if none, exactly "None detected —
+Graybeard owns every stage." Every placeholder must have a value BEFORE any
+template is filled.
 
 Then, in this order:
 
@@ -133,7 +147,7 @@ Then, in this order:
    it lives in the profile (this step 1), the standing orders (step 3), and the
    every-turn reminder (step 4), which the AI reads each session. This keeps one
    source of truth per personal fact and avoids two same-named rulebooks
-   clashing. (Design decision A, approved by Vikas 2026-07-07.)
+   clashing.
 3. **Standing orders:** fill `templates/claude-md-section.md` and MERGE it into
    `~/.claude/CLAUDE.md`:
    - Back up `CLAUDE.md` first if it exists.
@@ -148,28 +162,30 @@ Then, in this order:
    - Merge **only** the array entry at `hooks.UserPromptSubmit[0]` from the
      template. The template's ROOT-level `_graybeard` key is documentation —
      never write it into the user's settings.json.
-   - Parse the JSON. Ensure `hooks.UserPromptSubmit` is an array. If an entry
+   - Parse the JSON. **If it does not parse: STOP — change nothing in this file,
+     tell the user their settings.json has a pre-existing problem, and finish
+     the rest of onboarding without the reminder.** If it parses: if
+     `hooks.UserPromptSubmit` exists but is not an array, likewise STOP for this
+     file and tell the user (never coerce their data). Otherwise: if an entry
      already carries `"_graybeard": "graybeard-every-turn-reminder"` (re-run),
-     REPLACE it; otherwise APPEND the filled entry. Preserve every other hook and
-     key byte-for-byte. Write valid JSON back.
+     REPLACE it; else APPEND the filled entry. Preserve every other hook and key
+     byte-for-byte. Write valid JSON back.
    - Fill `{{USER_NAME}} {{REVIEW_STYLE}} {{AUTONOMY_LEVEL}}` in the echo command.
-     These are free-text answers: before substituting, strip or backslash-escape
-     any `"` or `\` in them so the `command` string stays valid JSON and the
-     shell `echo` doesn't break. (A name with a stray quote must not corrupt
-     settings.json.)
-5. **Traffic control (KTD6):** if the scan found another discipline plugin, add a
-   line to the generated CLAUDE.md block naming one owner per stage and deferring
-   (e.g. "superpowers detected — for planning defer to its brainstorming; for the
-   idea→product loop use graybeard-conductor"), and record it in the profile's
-   `TRAFFIC_NOTE`. If nothing was found, `TRAFFIC_NOTE` = "None detected — Graybeard
-   owns every stage."
+     These are free-text answers: before substituting, sanitize them — remove or
+     replace ANY character with quote or shell meaning (`"` `\` `$` backtick `!`
+     `%`), keeping plain letters, numbers, spaces and simple punctuation. The
+     reminder is plain prose; exotic characters add nothing and can corrupt
+     settings.json or the shell echo on either Windows or bash.
+5. **Traffic control:** if the scan found another discipline plugin, also add
+   the `TRAFFIC_NOTE` sentence as a line inside the generated CLAUDE.md block
+   (the value itself was already resolved before any template was filled).
 6. **Manifest (already growing — reconcile at the end):** you created the
    manifest first and appended to it as you went (see the append-log rule above).
    Now do a final pass: confirm every file you created has a `CREATED` line and
    every pristine backup has a `BACKUP <original>	<backup-path>` line, with no
    duplicates. This is the exact record `/graybeard-uninstall` replays.
 
-## Verify before you claim done (worklaw law #8 — they confirm, never discover)
+## Verify before you claim done (they confirm, never discover)
 
 Do NOT tell the user it worked until you have checked, yourself:
 - `~/.claude/graybeard/profile.md` exists and has no leftover `{{…}}` tokens.

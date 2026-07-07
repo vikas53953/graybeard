@@ -25,7 +25,7 @@ BACKLOG (v0.2, raised by Vikas 2026-07-07): **auto-trigger the loop.** /learn-fr
 should not be only manual. The worklaw 2-strikes moment IS the pain signal — the
 conductor/worklaw should auto-DETECT a learnable failure after N failed attempts
 and, at the user's autonomy level (LEVEL 1 auto-offer / LEVEL 2 auto-draft, paid
-test still gated by cost-before-spending law #7), fire the loop behind the scenes.
+test still gated by the cost-before-spending rule), fire the loop behind the scenes.
 Manual /learn-from-pain stays as an explicit option. Touches worklaw + conductor +
 learn-from-pain; needs its own design + test pass. Vikas's words: "learn from pain
 should be automatic, not manually enforced." v0.1 ships a minimal seed: worklaw

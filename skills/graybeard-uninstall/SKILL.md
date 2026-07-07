@@ -1,90 +1,104 @@
 ---
 name: graybeard-uninstall
-description: Use when the user runs /graybeard-uninstall, says "remove Graybeard", "undo the onboarding", "take Graybeard off my machine", or "put my settings back". Removes everything Graybeard generated and restores every backup exactly, using the manifest — leaves the machine as if Graybeard was never installed.
+description: Use when the user runs /graybeard-uninstall, says "remove Graybeard", "undo the onboarding", "take Graybeard off my machine", or "put my settings back". Surgically removes everything Graybeard added, using the manifest and Graybeard's own markers — and never touches the user's own content.
 ---
 
-# /graybeard-uninstall — leave no trace
+# /graybeard-uninstall — leave no trace, keep everything theirs
 
-Graybeard's promise (R6, acceptance example AE3): uninstall restores the user's
-`settings.json` to byte-equivalent-minus-our-additions and removes every file it
-generated. This works because `/onboard` and `/learn-from-pain` recorded every
-change in a manifest. Uninstall just replays it in reverse. Never guess what to
-remove — the manifest is the source of truth.
+Graybeard's promise: removal is **exact** — everything Graybeard added
+disappears; everything the user (or Claude Code itself) wrote stays, including
+changes made AFTER Graybeard was installed. That is why removal is **surgical
+by default**: every Graybeard addition carries a marker put there for exactly
+this moment. Blind backup-restore is the LAST resort, because a backup is a
+photo of the past — restoring it erases every edit made since.
 
-## Step 1 — read the manifest (the exact record)
+Where things live (shared vocabulary, used by all Graybeard skills):
+- **The manifest** — `~/.claude/graybeard/manifest.txt`: one line per change,
+  fields separated by ONE TAB. `CREATED<TAB><path>` or
+  `BACKUP<TAB><original><TAB><backup-path>`.
+- **Earned laws** — `~/.claude/skills/graybeard-law-*/` (from /learn-from-pain).
+- **The law ledger** — `~/.claude/graybeard/ledger.md`.
 
-Read `~/.claude/graybeard/manifest.txt`. Each line is tab-separated:
-- `CREATED <path>` — a file Graybeard made (didn't exist before). Delete it.
-- `BACKUP <original>	<backup-path>` — a file Graybeard modified after backing it
-  up. Restore the original from the backup.
+## Step 1 — read the manifest
 
-If the manifest is missing, do NOT start deleting by guesswork. Tell the user the
-manifest is gone and offer the careful fallback in Step 5.
+Read the manifest. If it's missing, do NOT guess — say so and use Step 5's
+marker-only path with per-file confirmation.
 
 ## Step 2 — show the plan, get "go" (they confirm, never discover)
 
-Before touching anything, show a plain list: which files will be deleted, which
-will be restored-from-backup, and which of the user's own files are untouched.
-Call out that their personal laws earned via `/learn-from-pain` will be removed
-too (they're in the manifest). Wait for "go". This is a destructive action —
-never run it unasked.
+Plain list before touching anything: what will be removed from which file
+(by marker), which whole files will be deleted (CREATED lines: profile, law
+ledger, earned `graybeard-law-*` skills — call these out; they're the user's
+earned laws), and what stays untouched. Wait for "go". Destructive — never run
+unasked.
 
-## Step 3 — restore backups, then delete created files (order matters)
+## Step 3 — surgical removal (the default)
 
-1. **Restore first.** For each `BACKUP <original>	<backup>` line: copy the backup
-   back over the original. This returns `~/.claude/CLAUDE.md` and
-   `~/.claude/settings.json` to their pre-Graybeard contents in one move — which
-   is cleaner and safer than trying to surgically un-merge the hook or the
-   CLAUDE.md block.
-   - Edge case: if the ORIGINAL never existed (Graybeard created `settings.json`
-     from scratch), there's a `CREATED` line for it instead of a `BACKUP` — it
-     gets deleted in the next step, correctly.
-2. **Delete created files.** For each `CREATED <path>` line: delete it. This
-   covers `profile.md`, the ledger, and every `graybeard-law-*` skill the user
-   earned via `/learn-from-pain`. (The three built-in rulebooks live in the
-   plugin, not the user's space — onboarding never copied them, so there's
-   nothing of theirs to delete there.)
-3. **Remove the backups and the Graybeard folder.** Once originals are restored,
-   glob-delete **every** `*.graybeard-backup-*` file under `~/.claude/` — not
-   only the ones named in the manifest. (A user who re-ran `/onboard` may have
-   older orphaned backups from earlier runs; sweep them all so nothing is left
-   behind.) Then remove the now-empty `~/.claude/graybeard/` directory and any
-   emptied `~/.claude/skills/graybeard-*` directories, deleting the manifest
-   itself last.
+Work file by file. **Do not delete any backups yet.**
 
-## Step 4 — verify the clean diff (AE3) before claiming done
+1. **`~/.claude/CLAUDE.md`:** delete exactly the lines from
+   `<!-- GRAYBEARD:BEGIN` through `GRAYBEARD:END -->` inclusive. Touch nothing
+   outside the markers.
+2. **`~/.claude/settings.json`:** parse the JSON. Remove ONLY the
+   `hooks.UserPromptSubmit` entry carrying the `_graybeard` marker. Leave every
+   other key and hook untouched. If removal leaves `UserPromptSubmit` as an
+   empty array, remove just that empty array. Re-serialize and confirm it still
+   parses. If the file was CREATED by Graybeard and now contains nothing but
+   `{}`, you may delete it; if it contains anything else (Claude Code writes
+   its own settings over time), leave the file in place.
+   - If settings.json does NOT parse before you start: STOP. Tell the user;
+     change nothing in that file.
+3. **Delete CREATED files** listed in the manifest (skip the settings.json
+   special case above). The three built-in rulebooks live in the plugin, not
+   user space — nothing to delete there.
 
-Do not tell the user it's clean until you've checked:
-- `~/.claude/settings.json` parses as valid JSON and contains NO
-  `graybeard-every-turn-reminder` entry and no `_graybeard` markers.
-- `~/.claude/CLAUDE.md` contains NO `GRAYBEARD:BEGIN` / `GRAYBEARD:END` markers.
-- No `~/.claude/skills/graybeard-*` directories remain.
-- `~/.claude/graybeard/` is gone.
-- No stray `*.graybeard-backup-*` files remain.
-Grep for `graybeard` (case-insensitive) under `~/.claude/settings.json` and
-`~/.claude/CLAUDE.md`; any hit that isn't the user's own text is a leftover —
-fix it before reporting.
+## Step 4 — VERIFY, then (and only then) sweep
 
-## Step 5 — fallback if the manifest is missing
+Verify first, while every backup still exists:
+- settings.json parses as valid JSON; zero `_graybeard` markers; the user's
+  other hooks/keys still present.
+- CLAUDE.md has zero `GRAYBEARD:BEGIN/END` markers; the user's own content
+  above and below the old block is intact.
+- No `~/.claude/skills/graybeard-law-*` directories remain. (A `graybeard-law-*`
+  folder containing a file NOT in the manifest = the user put something there:
+  do not force-delete; list it and ask.)
+- Case-insensitive grep for `graybeard` in settings.json and CLAUDE.md: any hit
+  that isn't the user's own text is a leftover — fix before proceeding.
 
-Only with the user's explicit go-ahead, remove by known markers instead of by
-manifest: strip the `GRAYBEARD:BEGIN…END` block from `CLAUDE.md`, remove the
-`settings.json` hook entry carrying `_graybeard`, and delete
-`~/.claude/skills/graybeard-*` and `~/.claude/graybeard/`. Back up each file
-before editing it (a `*.graybeard-uninstall-backup` copy) so a mistake is
-recoverable. Show the diff and let the user confirm each file.
+Only after every check passes: delete the backup files **listed in the
+manifest**, then `~/.claude/graybeard/` (manifest last). If you find
+`*.graybeard-backup-*` files NOT in the manifest, list them to the user and ask
+— an unmanifested backup may be the only pre-Graybeard copy of something, and
+silently deleting it violates the never-guess rule.
+
+If any check FAILS: stop, report exactly what's wrong, and leave all backups in
+place — they are the recovery path.
+
+## Step 5 — fallbacks (in order of preference)
+
+1. **Markers without manifest** (manifest missing): same surgery as Step 3 by
+   markers alone, with a fresh `*.graybeard-uninstall-backup` copy of each file
+   before editing, and per-file confirmation from the user.
+2. **Backup-restore** (only if surgery is impossible — e.g. markers were
+   hand-mangled): warn the user FIRST, in plain words: *"restoring the backup
+   returns this file to the day Graybeard was installed — any changes you or
+   Claude Code made to it since then will be lost."* Get explicit approval per
+   file. Never present this as the clean path; it isn't.
 
 ## Step 6 — report (plain)
 
-Confirm what was restored and removed, and the restart note: **the every-turn
-reminder and laws are unloaded at the next Claude Code startup — restart once to
-fully clear them.** Thank them; leave the door open to reinstall with `/onboard`.
+What was removed and from where, what was verified, and the restart note:
+**restart Claude Code once to fully unload the reminder and laws.** Also say
+plainly: the plugin itself (the three built-in rulebooks) is still installed —
+to remove it too, use `/plugin` → uninstall graybeard. Leave the door open to
+reinstall with `/onboard`.
 
 ## Red flags — STOP if you catch yourself thinking:
 
 | Thought | Reality |
 |---|---|
-| "No manifest — I'll just delete the graybeard stuff I can find" | Guessing risks the user's own files. Use the manifest, or the marker-based fallback with per-file confirm. |
-| "I'll un-merge the hook by hand" | Restoring the backup is exact and safe. Prefer it over surgery. |
-| "Deleted — it's clean" | Grep settings.json and CLAUDE.md for `graybeard`; count the markers at zero. Then say clean. |
-| "The user asked, I'll wipe it all now" | Show the plan and get 'go' — this is destructive and includes their earned laws. |
+| "Restoring the backup is simpler than surgery" | The backup erases everything written since install day. Surgery by markers is the exact path; backups are the emergency exit, with a warning. |
+| "No manifest — I'll just delete the graybeard stuff I can find" | Marker-based fallback with per-file confirm. Never guess. |
+| "Sweep the backups, then verify" | Verify FIRST. Backups are the recovery copies — they die last. |
+| "This stray backup file isn't in the manifest, delete it too" | Unmanifested backup = possibly the only pre-Graybeard copy of something. List and ask. |
+| "Deleted — it's clean" | Grep both files, count markers at zero, confirm user content intact. Then say clean. |

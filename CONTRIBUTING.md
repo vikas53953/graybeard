@@ -9,7 +9,7 @@ it's almost entirely plain text, with no build step and nothing to compile.
   behave. Each starts with a small `---` header giving the skill a `name` and a
   `description` (the `description` is what makes the AI reach for that skill at
   the right moment — write it as a list of trigger situations).
-- **Templates** (`templates/`) — fill-in-the-blank files that `/onboard` and the
+- **Templates** (`templates/`) — fill-in-the-blank files that `/graybeard:onboard` and the
   loop copy into the user's space, replacing `{{PLACEHOLDER}}` tokens with real
   answers.
 - **Docs** (`README.md`, `docs/`) — written for non-coders. No unglossed jargon.
@@ -44,7 +44,7 @@ Graybeard's whole value is discipline, so its own laws must hold to a high bar:
    short before/after showing the AI behaving badly without your law and well
    with it.
 3. Keep placeholders consistent: if you add a new `{{TOKEN}}` to a template, make
-   sure `/onboard` (or the relevant skill) fills it, and that nothing ships with a
+   sure `/graybeard:onboard` (or the relevant skill) fills it, and that nothing ships with a
    raw `{{` left in it.
 4. Open a pull request describing, in plain words, the pain your change prevents.
 
@@ -58,7 +58,7 @@ folder and confirm:
 - all expected files are generated, with no leftover `{{` tokens;
 - `settings.json` is still valid and merged (not overwritten);
 - backups exist for every file that was modified;
-- `/graybeard-uninstall` puts everything back cleanly.
+- `/graybeard:graybeard-uninstall` puts everything back cleanly.
 
 ## Style
 

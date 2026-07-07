@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"REMINDER (Graybeard laws, every turn): (1) {{USER_NAME}} reviews finished work as {{REVIEW_STYLE}} - never a wall of text; (2) short plain replies, name every assumption out loud, one goal at a time; (3) fix the class not the case - no per-case rules; (4) no 'done/fixed/works' without fresh evidence you ran it - {{USER_NAME}} confirms, never discovers; (5) new idea or feature = graybeard-conductor, small fix = graybeard-worklaw, vague or unfamiliar = graybeard-unknowns; (6) feedback is said once - check the ledger before asking anything twice; (7) logs before guesses - read the app's own logs first, autonomy level {{AUTONOMY_LEVEL}}.\""
+            "command": "echo \"REMINDER (Graybeard laws, every turn): (1) {{USER_NAME}} reviews finished work as {{REVIEW_STYLE}} - never a wall of text; (2) short plain replies, name every assumption out loud, one goal at a time; (3) fix the class not the case - no per-case rules; (4) no 'done/fixed/works' without fresh evidence you ran it - {{USER_NAME}} confirms, never discovers; (5) new idea or feature = graybeard-conductor, small fix = graybeard-worklaw, vague or unfamiliar = graybeard-unknowns; (6) feedback is said once - check the project's feedback notes (PIPELINE.md / implementation-notes.md) before asking anything twice; (7) logs before guesses - read the app's own logs first, autonomy level {{AUTONOMY_LEVEL}}.\""
           }
         ]
       }

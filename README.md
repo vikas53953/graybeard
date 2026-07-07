@@ -3,7 +3,7 @@
 **A senior engineer, watching over your shoulder — for people who don't write code.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](PIPELINE.md)
+[![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)](../../releases)
 [![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-plugin-orange.svg)](https://claude.com/claude-code)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 

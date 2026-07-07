@@ -41,7 +41,7 @@ this interview makes them
 **yours**: it asks seven short questions (one at a time), then writes:
 
 - **`~/.claude/graybeard/profile.md`** — your answers in plain English. This is
-  the *single source of truth*: change a line here, re-run `/onboard`, and
+  the *single source of truth*: change a line here, re-run `/graybeard:onboard`, and
   everything updates. (`~` means your home folder; `.claude` is where Claude Code
   keeps its settings.)
 - **A block in `~/.claude/CLAUDE.md`** — your standing orders. Claude Code reads
@@ -123,3 +123,26 @@ Yours (created on your machine by /onboard and the loop):
   ~/.claude/settings.json             the every-turn reminder (one merged entry)
   ~/.claude/skills/graybeard-law-*/    laws YOU earned via /learn-from-pain (one folder each)
 ```
+
+---
+
+## Install fallback — when `/plugin marketplace add` silently does nothing
+
+On some machines (seen on Windows, especially with spaces in folder paths) the
+`/plugin marketplace add` menu accepts your input and then… nothing appears in
+`/plugin list`. It's a known Claude Code quirk, not something you did wrong.
+
+**The easy fix — just ask Claude.** In Claude Code, say:
+
+```
+The /plugin marketplace add command silently failed. Please install the
+graybeard plugin from github vikas53953/graybeard by editing the plugin
+registry files directly (the same files the menu writes), then reload plugins
+and show me /plugin list to prove it's there.
+```
+
+Claude Code can edit its own registry files (`~/.claude/plugins/`
+`known_marketplaces.json` and `installed_plugins.json` — the files the menu
+writes for working plugins) and mirror a working entry for Graybeard. Make it
+show you the plugin listed and enabled before you continue — you confirm, you
+never discover.

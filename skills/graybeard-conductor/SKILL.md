@@ -39,7 +39,7 @@ evidence, TEST IT steps, quiz · 9 **Learn** — capture lessons for next time.
 memory/database, keys/login, home/hosting, watchtower/logs, locks/security,
 pipes/APIs — one plain sentence each, chosen or SKIPPED with the reason and
 when to revisit. No component silently chosen. The watchtower is never
-skippable (R10).
+skippable — every app gets logging from day one.
 (b) **The principles applied, named**: one job per file/module (no god-files),
 one source of truth per fact, simplest thing that works, one-direction data
 flow, security at boundaries, observability built in, loose coupling,
@@ -67,7 +67,9 @@ scoreboard with date.
    user picks.
 6. **Bars are numbers.** "Fast" isn't a requirement until it's "≤1.5s" and on
    the scoreboard. A bar missed after two fix attempts = a hard fork, never a
-   third patch.
+   third patch. (Distinct from worklaw's two-strikes: a missed BAR forks the
+   design; a failed FIX root-causes and offers /learn-from-pain. Both can apply
+   in a stage-5 build — bar → fork, fix → root-cause.)
 7. **Say the cost before spending.** Agent fan-outs and model escalations get
    a one-line price + reason first.
 8. **Logs before guesses.** After every build/run/failure, read the app's logs
