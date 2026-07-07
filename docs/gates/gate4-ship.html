@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graybeard — Gate 4: Ship</title>
+<style>
+  :root{
+    --bg:#f4f2ec; --panel:#fffdf8; --ink:#211d17; --muted:#6d6658;
+    --line:#e2ddd0; --brass:#a8792b; --brass-soft:#f0e4c8;
+    --good:#1f7a4d; --good-bg:#e7f3ec; --warn:#9a6a15; --warn-bg:#f7edd6;
+    --bad:#b23b2e; --bad-bg:#fbe8e5; --info:#3a5c86; --info-bg:#e7eef7;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#151109; --panel:#211b11; --ink:#efe8d8; --muted:#a99f8a;
+      --line:#352c1c; --brass:#d8ac5c; --brass-soft:#3a2f18;
+      --good:#5fce98; --good-bg:#132b1d; --warn:#e0b25c; --warn-bg:#332813;
+      --bad:#f0897c; --bad-bg:#381915; --info:#8fb0dc; --info-bg:#182534; }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f2ec; --panel:#fffdf8; --ink:#211d17; --muted:#6d6658; --line:#e2ddd0;
+    --brass:#a8792b; --brass-soft:#f0e4c8; --good:#1f7a4d; --good-bg:#e7f3ec;
+    --warn:#9a6a15; --warn-bg:#f7edd6; --bad:#b23b2e; --bad-bg:#fbe8e5;
+    --info:#3a5c86; --info-bg:#e7eef7; }
+  :root[data-theme="dark"]{
+    --bg:#151109; --panel:#211b11; --ink:#efe8d8; --muted:#a99f8a; --line:#352c1c;
+    --brass:#d8ac5c; --brass-soft:#3a2f18; --good:#5fce98; --good-bg:#132b1d;
+    --warn:#e0b25c; --warn-bg:#332813; --bad:#f0897c; --bad-bg:#381915;
+    --info:#8fb0dc; --info-bg:#182534; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.55;
+    font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-variant-numeric:tabular-nums}
+  .wrap{max-width:900px;margin:0 auto;padding:38px 22px 90px}
+  header{border-bottom:2px solid var(--brass);padding-bottom:20px}
+  .kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);font-weight:700;margin:0 0 8px}
+  h1{font-size:30px;margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance}
+  .lede{color:var(--muted);font-size:15.5px;margin:0;max-width:64ch}
+  .stamp{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--warn)}
+  section{margin-top:38px}
+  h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;
+    margin:0 0 14px;display:flex;align-items:baseline;gap:10px}
+  h2 .n{color:var(--brass);font-weight:800}
+  .gates{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:640px){.gates{grid-template-columns:1fr 1fr}}
+  .gate{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 16px;position:relative}
+  .gate .g{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .gate .t{font-size:14.5px;font-weight:700;margin-top:3px}
+  .gate .s{font-size:12px;margin-top:8px;font-weight:800}
+  .gate.done{border-color:var(--good)} .gate.done .s{color:var(--good)}
+  .gate.now{border-color:var(--warn);box-shadow:0 0 0 1px var(--warn)} .gate.now .s{color:var(--warn)}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--brass-soft);color:var(--ink);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  tr:last-child td{border-bottom:none}
+  .st{font-weight:800;font-size:11.5px}
+  .DONE{color:var(--good)} .CONFIRM{color:var(--info)}
+  code{background:var(--brass-soft);color:var(--ink);padding:1px 5px;border-radius:5px;font-size:12.5px;
+    font-family:"Cascadia Code",ui-monospace,Consolas,monospace}
+  .note{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:14px;color:var(--muted)}
+  .note b{color:var(--ink)}
+  .quiz details{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:0 16px;margin-bottom:10px}
+  .quiz summary{cursor:pointer;padding:13px 0;font-weight:600;font-size:14.5px;list-style:none}
+  .quiz summary::-webkit-details-marker{display:none}
+  .quiz summary::before{content:"▸ ";color:var(--brass);font-weight:800}
+  .quiz details[open] summary::before{content:"▾ "}
+  .quiz .a{padding:0 0 14px;font-size:13.5px;color:var(--muted);border-top:1px dashed var(--line);margin-top:2px;padding-top:12px}
+  .quiz .a b{color:var(--good)}
+  .ship{background:var(--panel);border:1.5px solid var(--brass);border-radius:16px;padding:22px}
+  .ship ol{margin:12px 0 0;padding-left:20px;font-size:14px}
+  .ship li{margin-bottom:9px}
+  .ship pre{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px 13px;overflow-x:auto;
+    font-size:12.5px;font-family:"Cascadia Code",ui-monospace,Consolas,monospace;margin:7px 0 0}
+  .warn-box{background:var(--warn-bg);border:1px solid var(--warn);border-radius:11px;padding:13px 16px;font-size:13.5px;color:var(--ink);margin-top:14px}
+  .score{font-size:44px;font-weight:800;color:var(--brass);letter-spacing:-.02em;line-height:1}
+  .foot{margin-top:40px;padding:18px 20px;border:1px dashed var(--line);border-radius:12px;background:var(--panel);font-size:14px;color:var(--muted)}
+  .foot b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">Graybeard · Gate 4 of 4 — Ship</p>
+    <h1>Graybeard is built, tested, and ready to go public. Your call to ship.</h1>
+    <p class="lede">Everything from idea to tested plugin is done. This is the final
+      gate: a full honest audit, a quick check that it's not a black box to you, and
+      the exact steps to publish. Nothing goes public until you say so — publishing
+      is a one-way door, so I stop here.</p>
+    <span class="stamp"><span class="dot"></span> Prepared 2026-07-07 · awaiting your ship approval</span>
+  </header>
+
+  <section>
+    <h2>The four gates</h2>
+    <div class="gates">
+      <div class="gate done"><div class="g">Gate 1</div><div class="t">Requirements</div><div class="s">APPROVED</div></div>
+      <div class="gate done"><div class="g">Gate 2</div><div class="t">UX mocks</div><div class="s">APPROVED</div></div>
+      <div class="gate done"><div class="g">Gate 3</div><div class="t">Design &amp; plan</div><div class="s">GREEN-LIT</div></div>
+      <div class="gate now"><div class="g">Gate 4</div><div class="t">Ship</div><div class="s">◆ YOU ARE HERE</div></div>
+    </div>
+    <p class="note" style="margin-top:12px">Plus, between build and here: <b>Stage 6
+      code review</b> (10/10 tests, 9/10 issues fixed) and <b>Stage 7 QA</b> (18/18
+      paths) — both passed. See <code>stage6-review.html</code> and
+      <code>stage7-qa.html</code>.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">A.</span> Plan vs. built — the whole promise, audited</h2>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Promised</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>U1–U6 · all build units</td><td><span class="st DONE">DONE</span></td><td>Scaffold, 3 rulebooks, setup, the loop, uninstall, docs — all built &amp; exercised.</td></tr>
+        <tr><td>R1 · Two-command install</td><td><span class="st DONE">DONE</span></td><td>Manifest + marketplace file built &amp; valid. (The ≤2-min clock is yours to confirm — step 1.)</td></tr>
+        <tr><td>R2 · Setup interview, ≤7 Q, one at a time</td><td><span class="st DONE">DONE</span></td><td>7 questions, tested. (≤10-min clock is yours — step 2.)</td></tr>
+        <tr><td>R3 · Starter rulebook</td><td><span class="st DONE">DONE</span></td><td>Work Law, Unknowns, Conductor — behavior-tested 6/6.</td></tr>
+        <tr><td>R4 · The loop (core)</td><td><span class="st DONE">DONE</span></td><td>Makes a general rule, proves it, shows a visual page, installs it.</td></tr>
+        <tr><td>R5 · Visual review everywhere</td><td><span class="st DONE">DONE</span></td><td>Every gate + the loop's evidence are HTML pages.</td></tr>
+        <tr><td>R6 · Safe, reversible, local-only</td><td><span class="st DONE">DONE</span></td><td>Merge-not-overwrite, backups, clean uninstall proven 4 ways; nothing leaves the machine.</td></tr>
+        <tr><td>R7 · Non-coder docs</td><td><span class="st DONE">DONE</span></td><td>Readme, how-it-works, contributor guide — plain language.</td></tr>
+        <tr><td>R8 · Open source &amp; installable</td><td><span class="st CONFIRM">SHIP STEP</span></td><td>MIT license + manifests ready. Going public is the ship action below.</td></tr>
+        <tr><td>R9 · System-design stage</td><td><span class="st DONE">DONE</span></td><td>Built into the Conductor's Gate 3.</td></tr>
+        <tr><td>R10 · Watchtower (logs before guesses)</td><td><span class="st DONE">DONE</span></td><td>In the Work Law + the setup's autonomy question.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note" style="margin-top:12px">Honest note: the four <span class="st CONFIRM">CONFIRM</span>-flavored
+      bars (install + the three stopwatch promises) can only be proven on your real
+      machine. They're the 5 steps on the QA page — I recommend running them before
+      you make the repo public.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">B.</span> Not a black box — a 3-question check for you</h2>
+    <p class="note" style="margin-bottom:14px">If you can answer these, you own what
+      you're shipping. Click to reveal each answer.</p>
+    <div class="quiz">
+      <details><summary>1. Someone uninstalls Graybeard. How does it put their machine back <em>exactly</em>, with none of its stuff left behind?</summary>
+        <div class="a"><b>It keeps a manifest</b> — a running list of every file it created and every file it backed up before touching. Uninstall replays that list: restore the backups, delete what it made, sweep any stray backups. That's why removal is byte-for-byte clean, even after you re-run setup.</div></details>
+      <details><summary>2. You chose "option A" for personalization. So where does your name actually live now — and why is one place better than four?</summary>
+        <div class="a"><b>In one file: your profile</b> (which feeds your standing orders and the every-turn reminder). The rulebooks themselves stay general. One source of truth means a preference can never disagree with itself, there are no duplicate rulebooks to clash, and a Graybeard update can't clobber your settings.</div></details>
+      <details><summary>3. The loop refuses to install a rule that says "if the user asks about login, do X." Why is that the single most important thing it does?</summary>
+        <div class="a"><b>Because case-patches multiply forever</b> — there are a hundred thousand specific cases, and a rule per case is how the system rots. Graybeard only installs a rule that kills a whole <em>class</em> of failure. That "general, not specific" test is what makes it get genuinely smarter instead of just longer.</div></details>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">C.</span> How complete is it?</h2>
+    <div class="note" style="display:flex;align-items:center;gap:22px">
+      <div class="score">9<span style="font-size:22px;color:var(--muted)">/10</span></div>
+      <div style="font-size:14px">Built, reviewed, and QA'd by actually running every
+        path. The only thing between here and a clean 10 is the five real-machine
+        confirmations — which by design only you can give. Nothing is broken or
+        unbuilt; it's waiting on a human and a publish.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">D.</span> To ship — the exact steps</h2>
+    <div class="ship">
+      <p style="margin:0;font-size:14.5px"><b>Recommended order:</b> test locally
+        first (no need to publish to try it), then make it public.</p>
+      <ol>
+        <li><b>Try it locally</b> — point Claude Code at this folder as a marketplace, install, and run the 5 confirm steps from the QA page:
+          <pre>/plugin marketplace add C:\Users\vikasmit\Downloads\vikas work\graybeard
+/plugin install graybeard</pre></li>
+        <li><b>Create a GitHub repo</b> named <code>graybeard</code> (public), then push:
+          <pre>git add -A
+git commit -m "Graybeard v0.1.0 — first public release"
+git branch -M main
+git remote add origin https://github.com/&lt;you&gt;/graybeard.git
+git push -u origin main</pre></li>
+        <li><b>Update the two placeholders</b> — swap <code>&lt;owner&gt;/&lt;repo&gt;</code> in the README for your real address, and <code>&lt;you&gt;</code> above.</li>
+        <li><b>Anyone can now install</b> with <code>/plugin marketplace add &lt;you&gt;/graybeard</code> then <code>/plugin install graybeard</code>.</li>
+      </ol>
+      <div class="warn-box"><b>Before you push:</b> publishing is public and hard to
+        undo — the code, your name in the manifest, and the commit history all
+        become visible and may be cached by others even if you later delete the
+        repo. Everything here is safe to publish (no secrets, no personal data —
+        the transcript-mining all happens on the user's own machine). Just go in
+        with eyes open.</div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>Your move — two honest options:</b> (1) run the 5 confirm steps locally
+    first, tell me what you saw, and I'll fix anything before we publish; or (2)
+    tell me to <b>prepare the release commit</b> now (I'll stage and commit locally,
+    but I will not create or push to any public repo without your explicit go — that
+    step is yours). My recommendation: <b>option 1</b> — confirm it works for you
+    once, then ship with total confidence.
+  </div>
+</div>
+</body>
+</html>

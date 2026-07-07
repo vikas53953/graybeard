@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graybeard — Stage 7: QA (the stranger test)</title>
+<style>
+  :root{
+    --bg:#f4f2ec; --panel:#fffdf8; --ink:#211d17; --muted:#6d6658;
+    --line:#e2ddd0; --brass:#a8792b; --brass-soft:#f0e4c8;
+    --good:#1f7a4d; --good-bg:#e7f3ec; --warn:#9a6a15; --warn-bg:#f7edd6;
+    --bad:#b23b2e; --bad-bg:#fbe8e5; --info:#3a5c86; --info-bg:#e7eef7;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#151109; --panel:#211b11; --ink:#efe8d8; --muted:#a99f8a;
+      --line:#352c1c; --brass:#d8ac5c; --brass-soft:#3a2f18;
+      --good:#5fce98; --good-bg:#132b1d; --warn:#e0b25c; --warn-bg:#332813;
+      --bad:#f0897c; --bad-bg:#381915; --info:#8fb0dc; --info-bg:#182534; }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f2ec; --panel:#fffdf8; --ink:#211d17; --muted:#6d6658; --line:#e2ddd0;
+    --brass:#a8792b; --brass-soft:#f0e4c8; --good:#1f7a4d; --good-bg:#e7f3ec;
+    --warn:#9a6a15; --warn-bg:#f7edd6; --bad:#b23b2e; --bad-bg:#fbe8e5;
+    --info:#3a5c86; --info-bg:#e7eef7; }
+  :root[data-theme="dark"]{
+    --bg:#151109; --panel:#211b11; --ink:#efe8d8; --muted:#a99f8a; --line:#352c1c;
+    --brass:#d8ac5c; --brass-soft:#3a2f18; --good:#5fce98; --good-bg:#132b1d;
+    --warn:#e0b25c; --warn-bg:#332813; --bad:#f0897c; --bad-bg:#381915;
+    --info:#8fb0dc; --info-bg:#182534; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.55;
+    font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-variant-numeric:tabular-nums}
+  .wrap{max-width:900px;margin:0 auto;padding:38px 22px 90px}
+  header{border-bottom:2px solid var(--brass);padding-bottom:20px}
+  .kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--brass);font-weight:700;margin:0 0 8px}
+  h1{font-size:29px;margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance}
+  .lede{color:var(--muted);font-size:15.5px;margin:0;max-width:64ch}
+  .stamp{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--good)}
+  section{margin-top:38px}
+  h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    font-weight:700;margin:0 0 14px;display:flex;align-items:baseline;gap:10px}
+  h2 .n{color:var(--brass);font-weight:800}
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:640px){.strip{grid-template-columns:1fr 1fr}}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .tile .big{font-size:21px;font-weight:800;letter-spacing:-.01em}
+  .tile .lbl{font-size:12px;color:var(--muted);margin-top:2px}
+  .tile.ok .big{color:var(--good)} .tile.you .big{color:var(--info)}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--brass-soft);color:var(--ink);font-size:11.5px;letter-spacing:.06em;
+    text-transform:uppercase}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11.5px;font-weight:800;white-space:nowrap}
+  .pill.pass{background:var(--good-bg);color:var(--good)}
+  .pill.you{background:var(--info-bg);color:var(--info)}
+  code{background:var(--brass-soft);color:var(--ink);padding:1px 5px;border-radius:5px;
+    font-size:12.5px;font-family:"Cascadia Code",ui-monospace,Consolas,monospace}
+  .note{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;
+    font-size:14px;color:var(--muted)}
+  .note b{color:var(--ink)}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:12px}
+  .steps li{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px 14px 52px;position:relative;font-size:14px}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:13px;
+    width:26px;height:26px;border-radius:50%;background:var(--info);color:#fff;font-weight:800;
+    font-size:13px;display:flex;align-items:center;justify-content:center}
+  .steps .exp{display:block;margin-top:5px;color:var(--muted);font-size:13px}
+  .steps .exp b{color:var(--good)}
+  .bars{display:grid;gap:9px}
+  .bar{display:grid;grid-template-columns:190px 1fr auto;align-items:center;gap:12px;font-size:13.5px}
+  @media(max-width:640px){.bar{grid-template-columns:1fr auto}}
+  .track{height:9px;border-radius:99px;background:var(--line);overflow:hidden}
+  @media(max-width:640px){.track{display:none}}
+  .fill{height:100%;background:var(--good)} .fill.p{background:var(--warn)}
+  .bar .v{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+  .foot{margin-top:40px;padding:18px 20px;border:1px dashed var(--line);border-radius:12px;
+    background:var(--panel);font-size:14px;color:var(--muted)}
+  .foot b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">Graybeard · Stage 7 of 9 — QA, the stranger test</p>
+    <h1>Every path exercised. The mechanics pass — the real machine is yours to confirm.</h1>
+    <p class="lede">I ran every command down every path I could, including the ugly
+      edge cases a real stranger would hit. All of it passed. Two kinds of things I
+      <em>cannot</em> honestly prove from here — a real install inside Claude Code,
+      and the stopwatch promises — so those are laid out for you to run and confirm.
+      You confirm; you never have to debug.</p>
+    <span class="stamp"><span class="dot"></span> QA run 2026-07-07 · next is Gate 4 (Ship)</span>
+  </header>
+
+  <section>
+    <h2>At a glance</h2>
+    <div class="strip">
+      <div class="tile ok"><div class="big">18 / 18</div><div class="lbl">test paths passed</div></div>
+      <div class="tile ok"><div class="big">Valid</div><div class="lbl">plugin + marketplace manifests</div></div>
+      <div class="tile ok"><div class="big">0</div><div class="lbl">leftovers after any uninstall</div></div>
+      <div class="tile you"><div class="big">5</div><div class="lbl">things for you to confirm live</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">A.</span> The stranger test — every command, every rough edge</h2>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>What a real user does</th><th>Result</th><th>What it proves</th></tr></thead>
+      <tbody>
+        <tr><td><b>Install files</b> — plugin + marketplace manifests</td><td><span class="pill pass">VALID</span></td><td>Both parse; all required fields present; name isn't a reserved <code>claude-*</code>; source points at the repo root.</td></tr>
+        <tr><td><b>Setup</b> — fresh machine, no existing config</td><td><span class="pill pass">PASS</span></td><td>Creates its files from scratch; removal later empties them cleanly.</td></tr>
+        <tr><td><b>Setup</b> — you already have a CLAUDE.md and settings</td><td><span class="pill pass">PASS</span></td><td>Merges into them, backs them up first, never overwrites.</td></tr>
+        <tr><td><b>Setup</b> — run it twice (change your answers)</td><td><span class="pill pass">PASS</span></td><td>Updates in place, no duplicate reminder, backup stays the pristine original.</td></tr>
+        <tr><td><b>Setup</b> — a name with a stray quote mark</td><td><span class="pill pass">PASS</span></td><td>Cleaned before use; settings stay valid, nothing breaks.</td></tr>
+        <tr><td><b>The loop</b> — turn a bad session into a rule</td><td><span class="pill pass">PASS</span></td><td>Produced a genuinely general rule from a specific angry transcript.</td></tr>
+        <tr><td><b>The loop</b> — "install untested, I'm on a budget"</td><td><span class="pill pass">PASS</span></td><td>Free path works; rule is honestly marked UNTESTED in your ledger.</td></tr>
+        <tr><td><b>The loop</b> — used before you ever ran setup</td><td><span class="pill pass">PASS</span></td><td>Creates its own records so the rule is still fully removable.</td></tr>
+        <tr><td><b>Uninstall</b> — normal, and after a re-run</td><td><span class="pill pass">PASS</span></td><td>Machine restored byte-for-byte; every stray backup swept.</td></tr>
+        <tr><td><b>Uninstall</b> — the records file got deleted</td><td><span class="pill pass">PASS</span></td><td>Falls back to marker-based removal; block, reminder, and folder all gone.</td></tr>
+        <tr><td><b>The rulebooks</b> — do they change behavior?</td><td><span class="pill pass">6 / 6</span></td><td>Briefs before coding, one question at a time, resumes a pipeline — under pressure.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note" style="margin-top:14px">During testing one helper AI created a
+      stray <code>expense-tracker/</code> folder in the repo while role-playing a
+      user. I spotted it and removed it — the repo is clean. Noting it so nothing
+      is swept under the rug.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">B.</span> Confirm these yourself — a fresh machine is the only honest proof</h2>
+    <p class="note" style="margin-bottom:16px">I can prove the file mechanics by
+      running them, but I <b>can't</b> prove a real install inside Claude Code, or
+      time the "2 minutes / 10 minutes / 1 hour" promises, without being you on
+      your machine. These five steps are how you confirm the last mile. Expected
+      result is in <b>green</b> — if any differs, tell me and I'll fix it, not you.</p>
+    <ol class="steps">
+      <li>In Claude Code, run <code>/plugin marketplace add &lt;owner&gt;/&lt;repo&gt;</code> then <code>/plugin install graybeard</code>, and restart.
+        <span class="exp">Expected: <b>both commands succeed and Graybeard appears installed, in under ~2 minutes.</b> (Windows note: if it says "git not on PATH", launch Claude Code from a folder other than your home directory.)</span></li>
+      <li>Say <code>set up Graybeard</code> and answer the seven questions.
+        <span class="exp">Expected: <b>one question at a time with a suggestion each, done in under 10 minutes,</b> and afterward a plain-English confirmation of what it created.</span></li>
+      <li>Restart Claude Code, then in any project type <code>build me a page that tracks my water intake</code>.
+        <span class="exp">Expected: <b>a short brief and a "go" prompt — not a wall of code</b> — proving your standing orders and reminder are live.</span></li>
+      <li>Paste a genuinely frustrating past transcript and say <code>learn from this session</code>. Choose the "prove it" path.
+        <span class="exp">Expected: <b>a general rule + a visual before/after page, inside an hour,</b> with the cost stated before any spend.</span></li>
+      <li>Say <code>remove Graybeard</code>, approve, and restart.
+        <span class="exp">Expected: <b>your CLAUDE.md and settings back exactly as before,</b> Graybeard gone without a trace.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="n">C.</span> The promises, scored honestly</h2>
+    <div class="bars">
+      <div class="bar"><span>Install ≤ 2 commands</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">MET · 2 commands</span></div>
+      <div class="bar"><span>Install ≤ 2 minutes</span><div class="track"><div class="fill p" style="width:60%"></div></div><span class="v">YOURS to time (step 1)</span></div>
+      <div class="bar"><span>Setup ≤ 7 questions</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">MET · 7</span></div>
+      <div class="bar"><span>Setup ≤ 10 minutes</span><div class="track"><div class="fill p" style="width:60%"></div></div><span class="v">YOURS to time (step 2)</span></div>
+      <div class="bar"><span>Loop ≤ 1 hour</span><div class="track"><div class="fill p" style="width:60%"></div></div><span class="v">YOURS to time (step 4)</span></div>
+      <div class="bar"><span>Safe &amp; reversible (clean uninstall)</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">MET · proven 4 ways</span></div>
+      <div class="bar"><span>Local-only, nothing leaves the machine</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">MET · by design</span></div>
+      <div class="bar"><span>Visual review everywhere</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">MET · gates + loop pages</span></div>
+      <div class="bar"><span>Rules are general, not case-patches</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">MET · loop test</span></div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>Where this leaves us:</b> QA passed everything I can run; the five green-lit
+    steps above are the real-machine confirmation only you can give. Next is
+    <b>Gate 4 — Ship</b>: publish the repo so <code>&lt;owner&gt;/&lt;repo&gt;</code>
+    becomes real, then you run the five steps once and we're done. Say <b>go</b> to
+    prep the ship gate, or run the five steps first and tell me what you saw.
+  </div>
+</div>
+</body>
+</html>

@@ -1,14 +1,23 @@
-# Handoff — continue the Graybeard build (written 2026-07-06)
+# Handoff — Graybeard build status (updated 2026-07-07)
 
-Session context was getting long; per conductor law 4, U3-U6 continue in a
-fresh session. State: Gates 1-3 approved (see PIPELINE.md for amendments R9
-System Design Principles + R10 Watchtower Law). U1 scaffold done. U2 rulebook
-done + 3/3 smoke tests passed (evidence in the session that built them; full
-test matrix due at stage 6).
+Stage 5 (Build) is COMPLETE: U1–U6 all built. See PIPELINE.md.
 
-Next: U3 /onboard (7 questions + optional story + autonomy-level question,
-generates profile/CLAUDE.md-section/hook per KTD2 with KTD5 backups) → U4
-/learn-from-pain (THE CORE — test against a sanitized Touch-the-Grass excerpt)
-→ U5 uninstall → U6 docs. All specs in docs/plans/2026-07-06-001-*.md.
-Vikas reviews via HTML pages only; one question at a time; his approvals so
-far are on the scoreboard — do not re-ask.
+What exists now:
+- 6 skills: graybeard-worklaw, graybeard-unknowns, graybeard-conductor (U2),
+  onboard (U3), learn-from-pain (U4), graybeard-uninstall (U5).
+- templates/: profile.md, hook.json, claude-md-section.md, law.md,
+  evidence-page.html.
+- docs: README.md, CONTRIBUTING.md, docs/how-it-works.md (U6).
+
+Verified so far (structural only): all planned files present; no stray unfilled
+placeholders in shipped docs; every template token is covered by a skill's fill
+list.
+
+NOT yet done (next = Stage 6 review + Stage 7 QA):
+- Behavioral/smoke tests of U3–U6 (subagent runs — costs tokens; get Vikas's OK).
+- Plan-vs-built audit (DONE/PARTIAL/NOT DONE/CHANGED/UNVERIFIABLE).
+- Full 2+ rep test matrix for all skills (deferred from U2 per Verification Contract).
+- Fresh-machine walkthrough of flows F1–F4.
+
+Open deviation flagged for Stage 6 (see implementation-notes.md 2026-07-07):
+marketplace.json for the 2-command install is deferred to Ship/Gate 4.

@@ -1,22 +1,30 @@
 ---
 name: graybeard-worklaw
-description: Use at the START of any coding, build, fix, debug, or "implement/add/change" task in ANY project — and whenever a fix breaks a neighboring feature (whack-a-mole loop), the user calls the code a black box, replies are getting long, or the user says "ok/done" without having tested. Establishes how to work with {{USER_NAME}}.
+description: Use at the START of any coding, build, fix, debug, or "implement/add/change" task in ANY project — and whenever a fix breaks a neighboring feature (whack-a-mole loop), the user calls the code a black box, replies are getting long, or the user says "ok/done" without having tested. Establishes how to work with the user.
 ---
 
-# The Work Law — how to work with {{USER_NAME}}
+# The Work Law — how to work with the user
 
-{{USER_NAME}} is the owner ({{USER_BACKGROUND}}; wants to understand and steer
-the work, not receive a black box). This law exists to stop the failures that
+The user is the owner — a product person who wants to understand and steer the
+work, not receive a black box. Their name, review style, and autonomy level live
+in their standing orders (`~/.claude/CLAUDE.md`) and profile
+(`~/.claude/graybeard/profile.md`); read those for the specifics. This law
+exists to stop the failures that
 kill AI-built projects: fix-one-break-another loops, silent assumptions,
 black-box code, and walls of text.
 
 ## The compact (set at onboarding — don't renegotiate)
 
 1. **Brief before code** — exact shape below. Wait for "go". No code before the go.
-2. **Short, scannable replies.** Plain words, no dev/ML jargon. {{REVIEW_STYLE}}
+2. **Short, scannable replies.** Plain words, no dev/ML jargon. Show anything
+   the user must review in the review style set in their standing orders
+   (default: a self-contained visual HTML page, never a wall of text).
 3. **Ask, don't assume.** Forced to guess? Say it: *"assuming X — correct me."*
 4. **One goal at a time.** No side-quests.
-5. **Two failed tries → STOP.** Root-cause; never patch the same symptom a third time.
+5. **Two failed tries → STOP.** Root-cause; never patch the same symptom a third
+   time. This is a *pain signal*: at this moment, offer the user
+   `/learn-from-pain` to turn the failure into a permanent, tested law — their
+   call, and never run the paid test without a yes (cost-before-spending, #7).
 6. **Prove it before "done."** Run it. Couldn't verify? Say so plainly.
 7. **Fix the class, not the case.** A correction never becomes a case-specific
    rule ("if asked about X, then..."). Find the ONE principle or structural
@@ -32,9 +40,10 @@ black-box code, and walls of text.
 10. **Logs before guesses (the Watchtower Law).** After every build, run, or
     reported failure: read the app's own logs FIRST and diagnose from that
     evidence. Assuming without reading available logs is a violation. Repeated
-    or hard failures → convene an agent panel over the log evidence. Autonomy
-    level {{AUTONOMY_LEVEL}}: propose-first, or fix-quietly-and-report (safe
-    fixes only — destructive or scope-changing actions always gated).
+    or hard failures → convene an agent panel over the log evidence. Act at the
+    user's chosen autonomy level (set in their standing orders; default
+    propose-first): LEVEL 1 propose-first, or LEVEL 2 fix-quietly-and-report
+    (safe fixes only — destructive or scope-changing actions always gated).
 
 ## The brief (send exactly this shape, then wait for "go")
 

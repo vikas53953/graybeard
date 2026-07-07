@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graybeard — Try It Locally (15-minute confirmation)</title>
+<style>
+  :root{
+    --bg:#f4f2ec; --panel:#fffdf8; --ink:#211d17; --muted:#6d6658;
+    --line:#e2ddd0; --brass:#a8792b; --brass-soft:#f0e4c8;
+    --good:#1f7a4d; --good-bg:#e7f3ec; --warn:#9a6a15; --warn-bg:#f7edd6;
+    --bad:#b23b2e; --bad-bg:#fbe8e5; --info:#3a5c86; --info-bg:#e7eef7;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#151109; --panel:#211b11; --ink:#efe8d8; --muted:#a99f8a;
+      --line:#352c1c; --brass:#d8ac5c; --brass-soft:#3a2f18;
+      --good:#5fce98; --good-bg:#132b1d; --warn:#e0b25c; --warn-bg:#332813;
+      --bad:#f0897c; --bad-bg:#381915; --info:#8fb0dc; --info-bg:#182534; }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f2ec; --panel:#fffdf8; --ink:#211d17; --muted:#6d6658; --line:#e2ddd0;
+    --brass:#a8792b; --brass-soft:#f0e4c8; --good:#1f7a4d; --good-bg:#e7f3ec;
+    --warn:#9a6a15; --warn-bg:#f7edd6; --bad:#b23b2e; --bad-bg:#fbe8e5; --info:#3a5c86; --info-bg:#e7eef7; }
+  :root[data-theme="dark"]{
+    --bg:#151109; --panel:#211b11; --ink:#efe8d8; --muted:#a99f8a; --line:#352c1c;
+    --brass:#d8ac5c; --brass-soft:#3a2f18; --good:#5fce98; --good-bg:#132b1d;
+    --warn:#e0b25c; --warn-bg:#332813; --bad:#f0897c; --bad-bg:#381915; --info:#8fb0dc; --info-bg:#182534; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.55;
+    font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif}
+  .wrap{max-width:820px;margin:0 auto;padding:36px 22px 90px}
+  header{border-bottom:2px solid var(--brass);padding-bottom:18px}
+  .kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);font-weight:700;margin:0 0 8px}
+  h1{font-size:27px;margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance}
+  .lede{color:var(--muted);font-size:15px;margin:0;max-width:62ch}
+  .heads{background:var(--warn-bg);border:1px solid var(--warn);border-radius:12px;padding:15px 17px;margin-top:22px;font-size:14px}
+  .heads b{color:var(--ink)}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:16px;position:relative}
+  .step .num{position:absolute;left:-11px;top:-11px;width:30px;height:30px;border-radius:50%;
+    background:var(--brass);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 4px var(--bg)}
+  .step h3{margin:0 0 4px;font-size:16.5px}
+  .step .sub{color:var(--muted);font-size:13px;margin:0 0 12px}
+  pre{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:12px 14px;overflow-x:auto;
+    font-size:13px;font-family:"Cascadia Code",ui-monospace,Consolas,monospace;margin:0}
+  pre + pre{margin-top:7px}
+  .exp{margin-top:12px;padding:11px 14px;background:var(--good-bg);border-radius:9px;font-size:13.5px}
+  .exp b{color:var(--good)}
+  .exp .x{color:var(--bad);font-weight:700}
+  code{background:var(--brass-soft);color:var(--ink);padding:1px 5px;border-radius:5px;font-size:12.5px;
+    font-family:"Cascadia Code",ui-monospace,Consolas,monospace}
+  .tell{margin-top:34px;background:var(--panel);border:1.5px solid var(--brass);border-radius:14px;padding:18px 20px;font-size:14.5px}
+  .tell b{color:var(--ink)}
+  .tell ul{margin:10px 0 0;padding-left:20px;color:var(--muted);font-size:13.5px}
+  .tell li{margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">Graybeard · Try it locally before publishing</p>
+    <h1>Confirm it works for you — about 15 minutes, no publishing needed</h1>
+    <p class="lede">Run these in your Claude Code, top to bottom. Each step says what
+      to expect. If anything doesn't match the green line — <b>stop and paste it to
+      me.</b> You're confirming, not debugging; a surprise is my bug to fix, not
+      yours.</p>
+  </header>
+
+  <div class="heads">
+    <b>Heads-up before you start (read once):</b> this installs Graybeard into your
+    real Claude Code and Step 1 will add a Graybeard block to your real
+    <code>~/.claude/CLAUDE.md</code> and a reminder to your <code>settings.json</code>.
+    It backs both up first, and <b>Step 4 restores them exactly</b>. During the test
+    you'll briefly have both your current setup and Graybeard's running side by side
+    — that's expected and harmless. Nothing leaves your machine.
+  </div>
+
+  <div class="step">
+    <div class="num">0</div>
+    <h3>Install it from this folder</h3>
+    <p class="sub">No GitHub, no commit needed — it runs straight from disk. Type these three, one at a time.</p>
+    <pre>/plugin marketplace add "C:\Users\vikasmit\Downloads\vikas work\graybeard"</pre>
+    <pre>/plugin install graybeard@graybeard</pre>
+    <pre>/reload-plugins</pre>
+    <div class="exp"><b>Expect:</b> it confirms the marketplace was added and the
+      plugin installed — in well under 2 minutes. <span class="x">If</span> it
+      errors on the path, check the quotes are exactly as above. (Windows: if it
+      says "git not on PATH", that's a known Claude Code quirk — tell me and I'll
+      give you the workaround.)</div>
+  </div>
+
+  <div class="step">
+    <div class="num">1</div>
+    <h3>Set it up — glance at a clock first</h3>
+    <p class="sub">Just talk to it. Note the time when you start.</p>
+    <pre>set up Graybeard</pre>
+    <div class="exp"><b>Expect:</b> <b>seven short questions, one at a time,</b> each
+      with a suggested answer — plus an optional story question at the end. Finishes
+      in <b>under 10 minutes</b>, then confirms in plain words what it created.
+      <span class="x">If</span> it fires several questions at once, or takes longer
+      — that's a finding, tell me.</div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <h3>Restart, then ask it to build something</h3>
+    <p class="sub">Fully close and reopen Claude Code (so the every-turn reminder loads), then in any project say:</p>
+    <pre>build me a page that tracks my daily water intake</pre>
+    <div class="exp"><b>Expect:</b> a short <b>brief and a "go" prompt — not a wall
+      of code.</b> That proves your standing orders and reminder are live and it's
+      obeying the Work Law.</div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <h3>Feed it a bad session (the core loop)</h3>
+    <p class="sub">Paste a genuinely frustrating past AI transcript (or just describe one), then:</p>
+    <pre>learn from this painful session</pre>
+    <div class="exp"><b>Expect:</b> it names the deep mistake, proposes <b>one general
+      rule</b>, <b>tells you the small cost before spending anything</b>, and (if you
+      pick "prove it") shows a visual before/after page — inside an hour. It should
+      never say a rule is "login-specific" or tied to one case.</div>
+  </div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <h3>Remove it — confirm it leaves no trace</h3>
+    <p class="sub">The important safety check. Say:</p>
+    <pre>remove Graybeard</pre>
+    <div class="exp"><b>Expect:</b> it shows what it'll remove, asks you to confirm,
+      then puts your <code>CLAUDE.md</code> and <code>settings.json</code> back
+      <b>exactly as they were before Step 1.</b> Restart once to finish clearing it.</div>
+  </div>
+
+  <div class="tell">
+    <b>Then tell me, in one line each:</b>
+    <ul>
+      <li>Steps that matched the green line — just say "1–4 all good" if so.</li>
+      <li>Anything that surprised you — paste the exact message or what felt off.</li>
+      <li>Your rough times for setup (Step 1) and the loop (Step 3).</li>
+    </ul>
+    I'll fix anything that came up, then we do the last thing: publish it public.
+  </div>
+</div>
+</body>
+</html>

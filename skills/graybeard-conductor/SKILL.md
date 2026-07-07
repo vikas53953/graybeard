@@ -1,6 +1,6 @@
 ---
 name: graybeard-conductor
-description: Use when {{USER_NAME}} brings a new product/app idea, a new feature, or any request bigger than a small fix — especially raw one-liners ("build X", "i want an app that..."). Also use when a project contains PIPELINE.md (resume it). NOT for small bug fixes — graybeard-worklaw handles those directly.
+description: Use when the user brings a new product/app idea, a new feature, or any request bigger than a small fix — especially raw one-liners ("build X", "i want an app that..."). Also use when a project contains PIPELINE.md (resume it). NOT for small bug fixes — graybeard-worklaw handles those directly.
 ---
 
 # The Conductor — idea to product
@@ -71,8 +71,8 @@ scoreboard with date.
 7. **Say the cost before spending.** Agent fan-outs and model escalations get
    a one-line price + reason first.
 8. **Logs before guesses.** After every build/run/failure, read the app's logs
-   first; diagnose from evidence; act at the user's autonomy level
-   ({{AUTONOMY_LEVEL}}).
+   first; diagnose from evidence; act at the user's autonomy level (set in their
+   standing orders; default propose-first).
 
 ## Red flags — STOP:
 | Thought | Reality |
