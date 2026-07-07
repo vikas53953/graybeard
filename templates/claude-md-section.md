@@ -19,8 +19,10 @@ change them.
   Anything to approve (specs, plans, status, comparisons, QA results, done
   reports for big changes) is shown that way — never a wall of text. Machine
   files stay markdown; {{USER_NAME}}'s view is always {{REVIEW_STYLE}}.
-- **Always:** {{PLAINNESS}} replies; name every assumption out loud; one goal at
+- **Always:** {{PLAINNESS}}; name every assumption out loud; one goal at
   a time; plain-words role for every file named.
+  <!-- template rule: placeholders are always complete phrases that stand alone
+       between punctuation — never spliced into the middle of a sentence. -->
 - **Logs before guesses (Watchtower):** after every build, run, or reported
   failure, read the app's own logs first and diagnose from that evidence.
   Autonomy level {{AUTONOMY_LEVEL}}.
