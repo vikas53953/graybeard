@@ -8,8 +8,8 @@
     {
       "name": "graybeard",
       "source": "./",
-      "description": "The senior-engineer discipline loop for non-coders: proven working laws, a short personalization interview, and the loop that turns your painful AI sessions into new tested laws.",
-      "version": "0.1.1",
+      "description": "The senior-engineer discipline loop for non-coders: proven working laws, a personalization interview, the loop that turns painful AI sessions into tested laws \u2014 plus click-everything QA that runs your app like a stranger, and Context Guard so a memory wipe never loses your work.",
+      "version": "0.2.0",
       "author": {
         "name": "Vikas Mittal and contributors"
       }

@@ -36,3 +36,9 @@
   HONEST CAVEAT: these fixes are text-verified but NOT re-run through the
   stage-6 test matrix — a re-test pass is owed before the next "fully tested"
   claim. Vikas's local plugin cache needs a re-sync to pick these up.
+
+## v0.2 (2026-07-22)
+- Vibe-QA imported from Vikas's personal skill (references/ kept verbatim); SKILL.md rewritten in Graybeard plain-words voice and renamed graybeard-vibe-qa.
+- Context Guard hooks are plugin-level (hooks/hooks.json, auto-load/auto-remove with the plugin) — deliberately NOT merged into user settings.json, so uninstall needs no new manifest entries.
+- Hook commands use `python3 ... || python ...` for Linux/Mac vs Windows. No Python = discipline-only mode (documented in README).
+- Deviation from context-guard standalone draft: HANDOFF template moved to plugin templates/, doc to docs/context-guard-how-it-works.md, matching repo layout.

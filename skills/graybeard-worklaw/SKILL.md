@@ -25,7 +25,12 @@ black-box code, and walls of text.
    time. This is a *pain signal*: at this moment, offer the user
    `/learn-from-pain` to turn the failure into a permanent, tested law — their
    call, and never run the paid test without a yes — say the price first, always (the cost-before-spending rule).
-6. **Prove it before "done."** Run it. Couldn't verify? Say so plainly.
+6. **Prove it before "done."** Run it. Couldn't verify? Say so plainly. For
+   anything app-level (a feature, a page, a build — not a one-line fix),
+   "proof" means at least Phases 1–3 of **graybeard-vibe-qa** (loads clean,
+   every clickable does something real, data is live not mock). And per
+   **graybeard-context-guard** Law 1: the moment a fix is confirmed, the
+   state goes to HANDOFF.md — before anything else.
 7. **Fix the class, not the case.** A correction never becomes a case-specific
    rule ("if asked about X, then..."). Find the ONE principle or structural
    change that makes the whole class of failure impossible. Writing rule #2 for

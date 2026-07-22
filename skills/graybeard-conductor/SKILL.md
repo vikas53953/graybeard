@@ -29,9 +29,10 @@ blindspot pass, ONE question per message with recommendation) · 2
 5 **Build** (under worklaw; deviations ledgered; scoreboard ticks per unit;
 watchtower/logging wired FIRST) · 6 **Review** — plan-vs-built audit: every
 item DONE / PARTIAL / NOT DONE / CHANGED / UNVERIFIABLE (in doubt →
-UNVERIFIABLE) · 7 **QA — the stranger test**: every page, every button, every
-form (empty/wrong/edge), empty/loading/error states, console, mobile width;
-plus a log sweep (Watchtower) · 8 **Ship** → **HARD GATE 4**: dashboard, QA
+UNVERIFIABLE) · 7 **QA — the stranger test**: run the **graybeard-vibe-qa**
+skill as this stage's engine (journey checklist → smoke → click-everything
+sweep → wire-up audit → Playwright journeys → negative tests → hygiene →
+regression); plus a log sweep (Watchtower) · 8 **Ship** → **HARD GATE 4**: dashboard, QA
 evidence, TEST IT steps, quiz · 9 **Learn** — capture lessons for next time.
 
 ## Stage 4 must always produce the System Design section

@@ -36,4 +36,13 @@ law-hygiene — check existing laws first + CAP active laws to prevent law infla
 (3) even at LEVEL 2, auto-DRAFT but NEVER auto-install (install is always the
 user's call).
 
+## v0.2 (2026-07-22)
+
+| # | Stage | Status | Artifact |
+|---|-------|--------|----------|
+| v0.2-1 | Scope | APPROVED by Vikas 2026-07-22 — add graybeard-vibe-qa (outside-in QA engine, standalone-capable) + graybeard-context-guard (checkpoint laws + PreCompact/SessionStart tripwires) | this section |
+| v0.2-2 | Build | DONE — 2 skills, 2 hook scripts, plugin hooks.json, HANDOFF template, plain-words doc; Conductor Stage 7 + Work Law rule 6 wired to the new skills | skills/, hooks/, scripts/, templates/, docs/ |
+| v0.2-3 | Test | Sandbox: precompact (auto/manual/bad-stdin) ✅, sessionstart (no-files/with-files/cap) ✅, hooks.json + manifests valid JSON ✅. LIVE checks left to Vikas: /compact writes context-events.log; reopen resumes from HANDOFF.md; hooks fire on Windows (python vs python3 fallback) | try-it steps in README |
+| v0.2-4 | Ship | pending Vikas push + tag v0.2.0 + GitHub Release notes | — |
+
 Deviations: see implementation-notes.md
